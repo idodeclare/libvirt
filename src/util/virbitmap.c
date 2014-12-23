@@ -67,7 +67,8 @@ virBitmapPtr virBitmapNew(size_t size)
     virBitmapPtr bitmap;
     size_t sz;
 
-    if (SIZE_MAX - VIR_BITMAP_BITS_PER_UNIT < size || size == 0) {
+    /*if (SIZE_MAX - VIR_BITMAP_BITS_PER_UNIT < size || size == 0) {*/
+    if (size == 0) {
         virReportOOMError();
         return NULL;
     }

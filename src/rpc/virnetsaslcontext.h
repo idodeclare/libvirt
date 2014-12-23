@@ -21,6 +21,7 @@
 #ifndef __VIR_NET_CLIENT_SASL_CONTEXT_H__
 # define __VIR_NET_CLIENT_SASL_CONTEXT_H__
 
+# include <sys/types.h>
 # include <sasl/sasl.h>
 
 # include "internal.h"
