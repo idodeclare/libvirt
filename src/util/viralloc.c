@@ -426,7 +426,7 @@ virInsertElementsN(void *ptrptr, size_t size, size_t at,
         at = *countptr;
     } else if (at > *countptr) {
         virReportError(VIR_ERR_INTERNAL_ERROR,
-                       _("out of bounds index - count %zu at %zu add %zu"),
+                       _("out of bounds index - count %lu at %lu add %lu"),
                        *countptr, at, add);
         return -1;
     }
@@ -485,7 +485,7 @@ virDeleteElementsN(void *ptrptr, size_t size, size_t at,
                    bool inPlace)
 {
     if (at + toremove > *countptr) {
-        VIR_WARN("out of bounds index - count %zu at %zu toremove %zu",
+        VIR_WARN("out of bounds index - count %lu at %lu toremove %lu",
                  *countptr, at, toremove);
         return -1;
     }

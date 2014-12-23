@@ -978,7 +978,7 @@ virNumaNodesetIsAvailable(virBitmapPtr nodeset)
             continue;
 
         virReportError(VIR_ERR_INTERNAL_ERROR,
-                       _("NUMA node %zd is unavailable"), bit);
+                       _("NUMA node %ld is unavailable"), bit);
         return false;
     }
     return true;

@@ -544,6 +544,10 @@ AC_ARG_WITH([esx],
   [AS_HELP_STRING([--with-esx],
     [add ESX support @<:@default=check@:>@])])
 m4_divert_text([DEFAULTS], [with_esx=check])
+AC_ARG_WITH([illumos],
+  [AS_HELP_STRING([--with-illumos],
+    [add Illumos support @<:@default=check@:>@])])
+m4_divert_text([DEFAULTS], [with_illumos=check])
 AC_ARG_WITH([hyperv],
   [AS_HELP_STRING([--with-hyperv],
     [add Hyper-V support @<:@default=check@:>@])])
@@ -2149,6 +2153,15 @@ if test "$with_xenapi" = "yes" ; then
 fi
 AM_CONDITIONAL([WITH_XENAPI], [test "$with_xenapi" = "yes"])
 
+
+dnl
+dnl check for (Illumos)
+dnl
+
+if test "$with_illumos" = "yes" ; then
+    AC_DEFINE_UNQUOTED([WITH_ILLUMOS], 1, [whether Illumos 64-bit mode is enabled])
+fi
+AM_CONDITIONAL([WITH_ILLUMOS], [test "$with_illumos" = "yes"])
 
 dnl
 dnl check for Hyper-V

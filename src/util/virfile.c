@@ -2647,7 +2647,7 @@ virFileOpenTty(int *ttymaster, char **ttyName, int rawmode)
         if (tcgetattr(slave, &ttyAttr) < 0)
             goto cleanup;
 
-        cfmakeraw(&ttyAttr);
+        CFMAKERAW(&ttyAttr);
 
         if (tcsetattr(slave, TCSADRAIN, &ttyAttr) < 0)
             goto cleanup;

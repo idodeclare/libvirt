@@ -398,4 +398,25 @@ enum {
     EXIT_ENOENT = 127, /* Could not find program to exec */
 };
 
+/**
+ * To support cfmakeraw-like on systems which do not have it:
+ *
+ * In place exchange of two values
+ */
+#ifdef WITH_ILLUMOS
+# define CFMAKERAW(t)                                                            \
+    do {                                                                         \
+    (t)->c_iflag &= ~(IMAXBEL|IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL|IXON); \
+    (t)->c_oflag &= ~OPOST;                                                        \
+    (t)->c_lflag &= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);                             \
+    (t)->c_cflag &= ~(CSIZE|PARENB);                                               \
+    (t)->c_cflag |= CS8;                                                           \
+    } while (0)
+#else
+# define CFMAKERAW(t)       \
+    do {                    \
+        cfmakeraw(t);       \
+    } while (0)
+#endif
+
 #endif                          /* __VIR_INTERNAL_H__ */

@@ -130,7 +130,7 @@ virClassPtr virClassNew(virClassPtr parent,
     } else if (parent &&
                objectSize <= parent->objectSize) {
         virReportInvalidArg(objectSize,
-                            _("object size %zu of %s is smaller than parent class %zu"),
+                            _("object size %lu of %s is smaller than parent class %lu"),
                             objectSize, name, parent->objectSize);
         return NULL;
     }

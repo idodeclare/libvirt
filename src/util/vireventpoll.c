@@ -111,7 +111,7 @@ int virEventPollAddHandle(int fd, int events,
     int watch;
     virMutexLock(&eventLoop.lock);
     if (eventLoop.handlesCount == eventLoop.handlesAlloc) {
-        EVENT_DEBUG("Used %zu handle slots, adding at least %d more",
+        EVENT_DEBUG("Used %lu handle slots, adding at least %d more",
                     eventLoop.handlesAlloc, EVENT_ALLOC_EXTENT);
         if (VIR_RESIZE_N(eventLoop.handles, eventLoop.handlesAlloc,
                          eventLoop.handlesCount, EVENT_ALLOC_EXTENT) < 0) {
@@ -196,7 +196,7 @@ int virEventPollRemoveHandle(int watch)
             continue;
 
         if (eventLoop.handles[i].watch == watch) {
-            EVENT_DEBUG("mark delete %zu %d", i, eventLoop.handles[i].fd);
+            EVENT_DEBUG("mark delete %lu %d", i, eventLoop.handles[i].fd);
             eventLoop.handles[i].deleted = 1;
             virEventPollInterruptLocked();
             virMutexUnlock(&eventLoop.lock);
@@ -226,7 +226,7 @@ int virEventPollAddTimeout(int frequency,
 
     virMutexLock(&eventLoop.lock);
     if (eventLoop.timeoutsCount == eventLoop.timeoutsAlloc) {
-        EVENT_DEBUG("Used %zu timeout slots, adding at least %d more",
+        EVENT_DEBUG("Used %lu timeout slots, adding at least %d more",
                     eventLoop.timeoutsAlloc, EVENT_ALLOC_EXTENT);
         if (VIR_RESIZE_N(eventLoop.timeouts, eventLoop.timeoutsAlloc,
                          eventLoop.timeoutsCount, EVENT_ALLOC_EXTENT) < 0) {
@@ -335,7 +335,7 @@ static int virEventPollCalculateTimeout(int *timeout)
 {
     unsigned long long then = 0;
     size_t i;
-    EVENT_DEBUG("Calculate expiry of %zu timers", eventLoop.timeoutsCount);
+    EVENT_DEBUG("Calculate expiry of %lu timers", eventLoop.timeoutsCount);
     /* Figure out if we need a timeout */
     for (i = 0; i < eventLoop.timeoutsCount; i++) {
         if (eventLoop.timeouts[i].deleted)
@@ -393,7 +393,7 @@ static struct pollfd *virEventPollMakePollFDs(int *nfds) {
 
     *nfds = 0;
     for (i = 0; i < eventLoop.handlesCount; i++) {
-        EVENT_DEBUG("Prepare n=%zu w=%d, f=%d e=%d d=%d", i,
+        EVENT_DEBUG("Prepare n=%lu w=%d, f=%d e=%d d=%d", i,
                     eventLoop.handles[i].watch,
                     eventLoop.handles[i].fd,
                     eventLoop.handles[i].events,
@@ -489,9 +489,9 @@ static int virEventPollDispatchHandles(int nfds, struct pollfd *fds)
         if (i == eventLoop.handlesCount)
             break;
 
-        VIR_DEBUG("i=%zu w=%d", i, eventLoop.handles[i].watch);
+        VIR_DEBUG("i=%lu w=%d", i, eventLoop.handles[i].watch);
         if (eventLoop.handles[i].deleted) {
-            EVENT_DEBUG("Skip deleted n=%zu w=%d f=%d", i,
+            EVENT_DEBUG("Skip deleted n=%lu w=%d f=%d", i,
                         eventLoop.handles[i].watch, eventLoop.handles[i].fd);
             continue;
         }
@@ -522,7 +522,7 @@ static void virEventPollCleanupTimeouts(void)
 {
     size_t i;
     size_t gap;
-    VIR_DEBUG("Cleanup %zu", eventLoop.timeoutsCount);
+    VIR_DEBUG("Cleanup %lu", eventLoop.timeoutsCount);
 
     /* Remove deleted entries, shuffling down remaining
      * entries as needed to form contiguous series
@@ -557,7 +557,7 @@ static void virEventPollCleanupTimeouts(void)
     gap = eventLoop.timeoutsAlloc - eventLoop.timeoutsCount;
     if (eventLoop.timeoutsCount == 0 ||
         (gap > eventLoop.timeoutsCount && gap > EVENT_ALLOC_EXTENT)) {
-        EVENT_DEBUG("Found %zu out of %zu timeout slots used, releasing %zu",
+        EVENT_DEBUG("Found %lu out of %lu timeout slots used, releasing %lu",
                     eventLoop.timeoutsCount, eventLoop.timeoutsAlloc, gap);
         VIR_SHRINK_N(eventLoop.timeouts, eventLoop.timeoutsAlloc, gap);
     }
@@ -571,7 +571,7 @@ static void virEventPollCleanupHandles(void)
 {
     size_t i;
     size_t gap;
-    VIR_DEBUG("Cleanup %zu", eventLoop.handlesCount);
+    VIR_DEBUG("Cleanup %lu", eventLoop.handlesCount);
 
     /* Remove deleted entries, shuffling down remaining
      * entries as needed to form contiguous series
@@ -606,7 +606,7 @@ static void virEventPollCleanupHandles(void)
     gap = eventLoop.handlesAlloc - eventLoop.handlesCount;
     if (eventLoop.handlesCount == 0 ||
         (gap > eventLoop.handlesCount && gap > EVENT_ALLOC_EXTENT)) {
-        EVENT_DEBUG("Found %zu out of %zu handles slots used, releasing %zu",
+        EVENT_DEBUG("Found %lu out of %lu handles slots used, releasing %lu",
                     eventLoop.handlesCount, eventLoop.handlesAlloc, gap);
         VIR_SHRINK_N(eventLoop.handles, eventLoop.handlesAlloc, gap);
     }

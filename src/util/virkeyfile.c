@@ -95,7 +95,7 @@ virKeyFileErrorHelper(const char *file, const char *func, size_t line,
     /* Construct the string 'filename:line: info' if we have that. */
     if (ctxt && ctxt->filename) {
         virReportErrorHelper(VIR_FROM_CONF, error, file, func, line,
-                             _("%s:%zu: %s '%s'"), ctxt->filename, ctxt->line, info, ctxt->cur);
+                             _("%s:%lu: %s '%s'"), ctxt->filename, ctxt->line, info, ctxt->cur);
     } else {
         virReportErrorHelper(VIR_FROM_CONF, error, file, func, line,
                              "%s", info);
@@ -247,7 +247,7 @@ static int virKeyFileParse(virKeyFilePtr conf,
     virKeyFileParserCtxt ctxt;
     int ret = -1;
 
-    VIR_DEBUG("Parse %p '%s' %p %zu", conf, filename, data, len);
+    VIR_DEBUG("Parse %p '%s' %p %lu", conf, filename, data, len);
 
     memset(&ctxt, 0, sizeof(ctxt));
 

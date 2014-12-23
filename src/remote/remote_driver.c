@@ -7830,7 +7830,7 @@ remoteNodeAllocPages(virConnectPtr conn,
 
     args.pageSizes.pageSizes_val = (u_int *) pageSizes;
     args.pageSizes.pageSizes_len = npages;
-    args.pageCounts.pageCounts_val = (uint64_t *) pageCounts;
+    args.pageCounts.pageCounts_val = (u_longlong_t *) pageCounts;
     args.pageCounts.pageCounts_len = npages;
     args.startCell = startCell;
     args.cellCount = cellCount;

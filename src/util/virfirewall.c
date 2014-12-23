@@ -953,7 +953,7 @@ virFirewallApply(virFirewallPtr firewall)
     VIR_DEBUG("Applying groups for %p", firewall);
     for (i = 0; i < firewall->ngroups; i++) {
         if (virFirewallApplyGroup(firewall, i) < 0) {
-            VIR_DEBUG("Rolling back groups upto %zu for %p", i, firewall);
+            VIR_DEBUG("Rolling back groups upto %lu for %p", i, firewall);
             size_t first = i;
             virErrorPtr saved_error = virSaveLastError();
 
@@ -962,7 +962,7 @@ virFirewallApply(virFirewallPtr firewall)
              * what the first rollback group we need to apply is
              */
             for (j = 0; j < i; j++) {
-                VIR_DEBUG("Checking inheritance of group %zu", i - j);
+                VIR_DEBUG("Checking inheritance of group %lu", i - j);
                 if (firewall->groups[i - j]->rollbackFlags &
                     VIR_FIREWALL_ROLLBACK_INHERIT_PREVIOUS)
                     first = (i - j) - 1;
@@ -971,7 +971,7 @@ virFirewallApply(virFirewallPtr firewall)
              * Now apply all rollback groups in order
              */
             for (j = first; j <= i; j++) {
-                VIR_DEBUG("Rolling back group %zu", j);
+                VIR_DEBUG("Rolling back group %lu", j);
                 virFirewallRollbackGroup(firewall, j);
             }
 

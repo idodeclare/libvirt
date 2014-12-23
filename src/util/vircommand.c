@@ -756,7 +756,7 @@ virExec(virCommandPtr cmd)
     if (cmd->flags & VIR_EXEC_LISTEN_FDS) {
         virCommandReorderFDs(cmd);
         virCommandAddEnvFormat(cmd, "LISTEN_PID=%u", getpid());
-        virCommandAddEnvFormat(cmd, "LISTEN_FDS=%zu", cmd->npassfd);
+        virCommandAddEnvFormat(cmd, "LISTEN_FDS=%lu", cmd->npassfd);
 
         if (cmd->has_error)
             goto fork_error;
